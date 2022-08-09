@@ -1,0 +1,16 @@
+# Set the Framework (Base Image) for the Virtual Machine
+FROM webapp.io/docker:20.10
+# FROM ubuntu
+
+RUN apt-get update &&  apt-get install -y curl git
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+RUN npm install --global yarn
+RUN git clone https://github.com/magento-research/pwa-studio.git && \
+cd pwa-studio &&  yarn install
+
+COPY . .
+RUN ls
+
+RUN BACKGROUND yarn workspace pwa-studio run watch
+EXPOSE WEBSITE http://localhost:80
